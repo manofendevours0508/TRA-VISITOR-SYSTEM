@@ -1,0 +1,118 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Role {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  permissions String? // JSON-encoded list of permission keys
+  users       User[]
+}
+
+model Department {
+  id          Int        @id @default(autoincrement())
+  name        String     @unique
+  description String?
+  offices     Office[]
+  users       User[]
+  documents   Document[]
+}
+
+model User {
+  id           Int         @id @default(autoincrement())
+  fullName     String
+  username     String      @unique
+  passwordHash String
+  status       String      @default("active") // active | disabled
+  roleId       Int
+  role         Role        @relation(fields: [roleId], references: [id])
+  departmentId Int?
+  department   Department? @relation(fields: [departmentId], references: [id])
+  createdAt    DateTime    @default(now())
+  auditLogs    AuditLog[]
+  movementsOut FileMovement[] @relation("MovementFrom")
+  movementsIn  FileMovement[] @relation("MovementTo")
+  assignedDocuments Document[] @relation("AssignedOfficer")
+}
+
+model Office {
+  id           Int         @id @default(autoincrement())
+  name         String
+  officeNumber String
+  floor        String
+  wing         String?
+  location     String?
+  contactInfo  String?
+  departmentId Int
+  department   Department  @relation(fields: [departmentId], references: [id])
+  services     Service[]
+}
+
+model Service {
+  id           Int      @id @default(autoincrement())
+  name         String
+  description  String?
+  procedure    String? // step-by-step text, newline separated
+  requirements String? // required documents, newline separated
+  officeId     Int
+  office       Office   @relation(fields: [officeId], references: [id])
+}
+
+model Document {
+  id             Int             @id @default(autoincrement())
+  referenceNo    String          @unique
+  subject        String
+  sender         String?
+  recipient      String?
+  documentType   String          // incoming | outgoing
+  dateReceived   DateTime?
+  dateDispatched DateTime?
+  deliveryMethod String?
+  filePath       String?
+  status         String          @default("pending")
+  departmentId   Int?
+  department     Department?     @relation(fields: [departmentId], references: [id])
+  assignedToId   Int?
+  assignedTo     User?           @relation("AssignedOfficer", fields: [assignedToId], references: [id])
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  movements      FileMovement[]
+}
+
+model FileMovement {
+  id           Int       @id @default(autoincrement())
+  documentId   Int
+  document     Document  @relation(fields: [documentId], references: [id])
+  fromUserId   Int?
+  fromUser     User?     @relation("MovementFrom", fields: [fromUserId], references: [id])
+  toUserId     Int?
+  toUser       User?     @relation("MovementTo", fields: [toUserId], references: [id])
+  dateSent     DateTime  @default(now())
+  dateReceived DateTime?
+  status       String    @default("in-transit")
+  remarks      String?
+}
+
+model Announcement {
+  id        Int      @id @default(autoincrement())
+  title     String
+  message   String
+  startDate DateTime
+  endDate   DateTime
+  status    String   @default("active")
+}
+
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  userId    Int?
+  user      User?    @relation(fields: [userId], references: [id])
+  action    String
+  recordId  String?
+  timestamp DateTime @default(now())
+  device    String?
+}
