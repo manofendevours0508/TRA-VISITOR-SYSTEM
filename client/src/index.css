@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+@theme {
+  --color-tra-yellow: #fcee1f;
+  --color-tra-yellow-dark: #e3d200;
+  --color-tra-black: #000000;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
