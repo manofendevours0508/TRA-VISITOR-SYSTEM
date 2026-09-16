@@ -33,10 +33,10 @@ export default function Users() {
   };
 
   const resetPassword = async (user) => {
-    const password = window.prompt(`${t('resetPassword')} ${user.username}:`);
+    const password = window.prompt(`${t('newPasswordPromptFor')} ${user.username}:`);
     if (!password) return;
     await staffApi.post(`/users/${user.id}/reset-password`, { password });
-    window.alert(t('resetPassword'));
+    window.alert(t('passwordResetSuccess'));
   };
 
   return (

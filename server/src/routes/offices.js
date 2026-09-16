@@ -24,27 +24,35 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', requireAuth, requireRole(...manageRoles), async (req, res) => {
-  const { name, officeNumber, floor, wing, location, contactInfo, departmentId } = req.body;
+  const { name, nameSw, officeNumber, floor, floorSw, wing, wingSw, location, locationSw, contactInfo, departmentId } = req.body;
   if (!name || !officeNumber || !floor || !departmentId) {
     return res.status(400).json({ error: 'name, officeNumber, floor and departmentId are required' });
   }
   const office = await prisma.office.create({
-    data: { name, officeNumber, floor, wing, location, contactInfo, departmentId: Number(departmentId) },
+    data: {
+      name, nameSw: nameSw || null, officeNumber, floor, floorSw: floorSw || null,
+      wing, wingSw: wingSw || null, location, locationSw: locationSw || null, contactInfo,
+      departmentId: Number(departmentId),
+    },
     include: { department: true, services: true },
   });
   res.status(201).json(office);
 });
 
 router.put('/:id', requireAuth, requireRole(...manageRoles), async (req, res) => {
-  const { name, officeNumber, floor, wing, location, contactInfo, departmentId } = req.body;
+  const { name, nameSw, officeNumber, floor, floorSw, wing, wingSw, location, locationSw, contactInfo, departmentId } = req.body;
   const office = await prisma.office.update({
     where: { id: Number(req.params.id) },
     data: {
       ...(name !== undefined && { name }),
+      ...(nameSw !== undefined && { nameSw: nameSw || null }),
       ...(officeNumber !== undefined && { officeNumber }),
       ...(floor !== undefined && { floor }),
+      ...(floorSw !== undefined && { floorSw: floorSw || null }),
       ...(wing !== undefined && { wing }),
+      ...(wingSw !== undefined && { wingSw: wingSw || null }),
       ...(location !== undefined && { location }),
+      ...(locationSw !== undefined && { locationSw: locationSw || null }),
       ...(contactInfo !== undefined && { contactInfo }),
       ...(departmentId !== undefined && { departmentId: Number(departmentId) }),
     },

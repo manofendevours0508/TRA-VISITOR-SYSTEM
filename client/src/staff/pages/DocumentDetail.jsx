@@ -87,7 +87,7 @@ export default function DocumentDetail() {
             {doc.movements?.map((m) => (
               <div key={m.id} className="border rounded-lg p-3 text-sm flex items-center justify-between">
                 <div>
-                  <span className="font-medium">{m.fromUser?.fullName || 'Registry'}</span>
+                  <span className="font-medium">{m.fromUser?.fullName || t('registryOrigin')}</span>
                   {' → '}
                   <span className="font-medium">{m.toUser?.fullName}</span>
                   <div className="text-slate-500">

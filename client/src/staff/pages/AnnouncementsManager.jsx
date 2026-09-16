@@ -6,7 +6,7 @@ import { useLanguage } from '../../i18n/LanguageContext';
 export default function AnnouncementsManager() {
   const [announcements, setAnnouncements] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState({ title: '', message: '', startDate: '', endDate: '' });
+  const [form, setForm] = useState({ title: '', titleSw: '', message: '', messageSw: '', startDate: '', endDate: '' });
   const { t } = useLanguage();
 
   const load = () => staffApi.get('/announcements/all').then((r) => setAnnouncements(r.data));
@@ -16,7 +16,7 @@ export default function AnnouncementsManager() {
   const handleCreate = async (e) => {
     e.preventDefault();
     await staffApi.post('/announcements', form);
-    setForm({ title: '', message: '', startDate: '', endDate: '' });
+    setForm({ title: '', titleSw: '', message: '', messageSw: '', startDate: '', endDate: '' });
     setShowForm(false);
     load();
   };
@@ -48,8 +48,16 @@ export default function AnnouncementsManager() {
             <input required value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="w-full border border-tra-black rounded-lg px-3 py-2 bg-white" />
           </div>
           <div className="col-span-2">
+            <label className="block text-sm font-medium text-tra-black mb-1">{t('title')} (Kiswahili)</label>
+            <input value={form.titleSw} onChange={(e) => setForm({ ...form, titleSw: e.target.value })} className="w-full border border-tra-black rounded-lg px-3 py-2 bg-white" />
+          </div>
+          <div className="col-span-2">
             <label className="block text-sm font-medium text-tra-black mb-1">{t('message')}</label>
             <textarea required value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="w-full border border-tra-black rounded-lg px-3 py-2 bg-white" rows={3} />
+          </div>
+          <div className="col-span-2">
+            <label className="block text-sm font-medium text-tra-black mb-1">{t('message')} (Kiswahili)</label>
+            <textarea value={form.messageSw} onChange={(e) => setForm({ ...form, messageSw: e.target.value })} className="w-full border border-tra-black rounded-lg px-3 py-2 bg-white" rows={3} />
           </div>
           <div>
             <label className="block text-sm font-medium text-tra-black mb-1">{t('startDate')}</label>

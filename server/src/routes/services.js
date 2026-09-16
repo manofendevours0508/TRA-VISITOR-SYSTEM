@@ -24,26 +24,34 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', requireAuth, requireRole(...manageRoles), async (req, res) => {
-  const { name, description, procedure, requirements, officeId } = req.body;
+  const { name, nameSw, description, descriptionSw, procedure, procedureSw, requirements, requirementsSw, officeId } = req.body;
   if (!name || !officeId) {
     return res.status(400).json({ error: 'name and officeId are required' });
   }
   const service = await prisma.service.create({
-    data: { name, description, procedure, requirements, officeId: Number(officeId) },
+    data: {
+      name, nameSw: nameSw || null, description, descriptionSw: descriptionSw || null,
+      procedure, procedureSw: procedureSw || null, requirements, requirementsSw: requirementsSw || null,
+      officeId: Number(officeId),
+    },
     include: { office: { include: { department: true } } },
   });
   res.status(201).json(service);
 });
 
 router.put('/:id', requireAuth, requireRole(...manageRoles), async (req, res) => {
-  const { name, description, procedure, requirements, officeId } = req.body;
+  const { name, nameSw, description, descriptionSw, procedure, procedureSw, requirements, requirementsSw, officeId } = req.body;
   const service = await prisma.service.update({
     where: { id: Number(req.params.id) },
     data: {
       ...(name !== undefined && { name }),
+      ...(nameSw !== undefined && { nameSw: nameSw || null }),
       ...(description !== undefined && { description }),
+      ...(descriptionSw !== undefined && { descriptionSw: descriptionSw || null }),
       ...(procedure !== undefined && { procedure }),
+      ...(procedureSw !== undefined && { procedureSw: procedureSw || null }),
       ...(requirements !== undefined && { requirements }),
+      ...(requirementsSw !== undefined && { requirementsSw: requirementsSw || null }),
       ...(officeId !== undefined && { officeId: Number(officeId) }),
     },
     include: { office: { include: { department: true } } },

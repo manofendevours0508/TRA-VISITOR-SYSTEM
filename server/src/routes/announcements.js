@@ -27,23 +27,28 @@ router.get('/all', requireAuth, requireRole(...manageRoles), async (req, res) =>
 });
 
 router.post('/', requireAuth, requireRole(...manageRoles), async (req, res) => {
-  const { title, message, startDate, endDate, status } = req.body;
+  const { title, titleSw, message, messageSw, startDate, endDate, status } = req.body;
   if (!title || !message || !startDate || !endDate) {
     return res.status(400).json({ error: 'title, message, startDate and endDate are required' });
   }
   const announcement = await prisma.announcement.create({
-    data: { title, message, startDate: new Date(startDate), endDate: new Date(endDate), status: status || 'active' },
+    data: {
+      title, titleSw: titleSw || null, message, messageSw: messageSw || null,
+      startDate: new Date(startDate), endDate: new Date(endDate), status: status || 'active',
+    },
   });
   res.status(201).json(announcement);
 });
 
 router.put('/:id', requireAuth, requireRole(...manageRoles), async (req, res) => {
-  const { title, message, startDate, endDate, status } = req.body;
+  const { title, titleSw, message, messageSw, startDate, endDate, status } = req.body;
   const announcement = await prisma.announcement.update({
     where: { id: Number(req.params.id) },
     data: {
       ...(title !== undefined && { title }),
+      ...(titleSw !== undefined && { titleSw: titleSw || null }),
       ...(message !== undefined && { message }),
+      ...(messageSw !== undefined && { messageSw: messageSw || null }),
       ...(startDate !== undefined && { startDate: new Date(startDate) }),
       ...(endDate !== undefined && { endDate: new Date(endDate) }),
       ...(status !== undefined && { status }),

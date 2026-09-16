@@ -92,7 +92,7 @@ export default function DocumentRegister({ type }) {
               onChange={(e) => setForm({ ...form, departmentId: e.target.value })}
               className="w-full border border-tra-black rounded-lg px-3 py-2 bg-white"
             >
-              <option value="">{t('selectRole')}</option>
+              <option value="">{t('departmentPlaceholder')}</option>
               {departments.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
             </select>
           </div>

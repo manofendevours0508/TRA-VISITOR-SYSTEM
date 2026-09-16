@@ -7,8 +7,8 @@ export default function DirectoryManager() {
   const [departments, setDepartments] = useState([]);
   const [showOfficeForm, setShowOfficeForm] = useState(false);
   const [showServiceForm, setShowServiceForm] = useState(false);
-  const [officeForm, setOfficeForm] = useState({ name: '', officeNumber: '', floor: '', wing: '', contactInfo: '', departmentId: '' });
-  const [serviceForm, setServiceForm] = useState({ name: '', description: '', requirements: '', procedure: '', officeId: '' });
+  const [officeForm, setOfficeForm] = useState({ name: '', nameSw: '', officeNumber: '', floor: '', floorSw: '', wing: '', wingSw: '', contactInfo: '', departmentId: '' });
+  const [serviceForm, setServiceForm] = useState({ name: '', nameSw: '', description: '', descriptionSw: '', requirements: '', requirementsSw: '', procedure: '', procedureSw: '', officeId: '' });
   const { t } = useLanguage();
 
   const allOffices = departments.flatMap((d) => d.offices.map((o) => ({ ...o, departmentName: d.name })));
@@ -20,7 +20,7 @@ export default function DirectoryManager() {
   const handleCreateOffice = async (e) => {
     e.preventDefault();
     await staffApi.post('/offices', officeForm);
-    setOfficeForm({ name: '', officeNumber: '', floor: '', wing: '', contactInfo: '', departmentId: '' });
+    setOfficeForm({ name: '', nameSw: '', officeNumber: '', floor: '', floorSw: '', wing: '', wingSw: '', contactInfo: '', departmentId: '' });
     setShowOfficeForm(false);
     load();
   };
@@ -28,7 +28,7 @@ export default function DirectoryManager() {
   const handleCreateService = async (e) => {
     e.preventDefault();
     await staffApi.post('/services', serviceForm);
-    setServiceForm({ name: '', description: '', requirements: '', procedure: '', officeId: '' });
+    setServiceForm({ name: '', nameSw: '', description: '', descriptionSw: '', requirements: '', requirementsSw: '', procedure: '', procedureSw: '', officeId: '' });
     setShowServiceForm(false);
     load();
   };
@@ -55,9 +55,12 @@ export default function DirectoryManager() {
       {showOfficeForm && (
         <form onSubmit={handleCreateOffice} className="bg-tra-yellow rounded-xl shadow p-6 mb-6 grid grid-cols-2 gap-4">
           <input required placeholder={t('officeNamePlaceholder')} value={officeForm.name} onChange={(e) => setOfficeForm({ ...officeForm, name: e.target.value })} className="border border-tra-black rounded-lg px-3 py-2 bg-white" />
+          <input placeholder={`${t('officeNamePlaceholder')} (Kiswahili)`} value={officeForm.nameSw} onChange={(e) => setOfficeForm({ ...officeForm, nameSw: e.target.value })} className="border border-tra-black rounded-lg px-3 py-2 bg-white" />
           <input required placeholder={t('officeNumberPlaceholder')} value={officeForm.officeNumber} onChange={(e) => setOfficeForm({ ...officeForm, officeNumber: e.target.value })} className="border border-tra-black rounded-lg px-3 py-2 bg-white" />
           <input required placeholder={t('floorPlaceholder')} value={officeForm.floor} onChange={(e) => setOfficeForm({ ...officeForm, floor: e.target.value })} className="border border-tra-black rounded-lg px-3 py-2 bg-white" />
+          <input placeholder={`${t('floorPlaceholder')} (Kiswahili)`} value={officeForm.floorSw} onChange={(e) => setOfficeForm({ ...officeForm, floorSw: e.target.value })} className="border border-tra-black rounded-lg px-3 py-2 bg-white" />
           <input placeholder={t('wingPlaceholder')} value={officeForm.wing} onChange={(e) => setOfficeForm({ ...officeForm, wing: e.target.value })} className="border border-tra-black rounded-lg px-3 py-2 bg-white" />
+          <input placeholder={`${t('wingPlaceholder')} (Kiswahili)`} value={officeForm.wingSw} onChange={(e) => setOfficeForm({ ...officeForm, wingSw: e.target.value })} className="border border-tra-black rounded-lg px-3 py-2 bg-white" />
           <input placeholder={t('contactInfoPlaceholder')} value={officeForm.contactInfo} onChange={(e) => setOfficeForm({ ...officeForm, contactInfo: e.target.value })} className="border border-tra-black rounded-lg px-3 py-2 bg-white" />
           <select required value={officeForm.departmentId} onChange={(e) => setOfficeForm({ ...officeForm, departmentId: e.target.value })} className="border border-tra-black rounded-lg px-3 py-2 bg-white">
             <option value="">{t('departmentPlaceholder')}</option>
@@ -72,9 +75,13 @@ export default function DirectoryManager() {
       {showServiceForm && (
         <form onSubmit={handleCreateService} className="bg-tra-yellow rounded-xl shadow p-6 mb-8 grid grid-cols-2 gap-4">
           <input required placeholder={t('serviceNamePlaceholder')} value={serviceForm.name} onChange={(e) => setServiceForm({ ...serviceForm, name: e.target.value })} className="border border-tra-black rounded-lg px-3 py-2 bg-white col-span-2" />
+          <input placeholder={`${t('serviceNamePlaceholder')} (Kiswahili)`} value={serviceForm.nameSw} onChange={(e) => setServiceForm({ ...serviceForm, nameSw: e.target.value })} className="border border-tra-black rounded-lg px-3 py-2 bg-white col-span-2" />
           <textarea placeholder={t('descriptionPlaceholder')} value={serviceForm.description} onChange={(e) => setServiceForm({ ...serviceForm, description: e.target.value })} className="border border-tra-black rounded-lg px-3 py-2 bg-white col-span-2" rows={2} />
+          <textarea placeholder={`${t('descriptionPlaceholder')} (Kiswahili)`} value={serviceForm.descriptionSw} onChange={(e) => setServiceForm({ ...serviceForm, descriptionSw: e.target.value })} className="border border-tra-black rounded-lg px-3 py-2 bg-white col-span-2" rows={2} />
           <textarea placeholder={t('requirementsPlaceholder')} value={serviceForm.requirements} onChange={(e) => setServiceForm({ ...serviceForm, requirements: e.target.value })} className="border border-tra-black rounded-lg px-3 py-2 bg-white" rows={3} />
           <textarea placeholder={t('procedurePlaceholder')} value={serviceForm.procedure} onChange={(e) => setServiceForm({ ...serviceForm, procedure: e.target.value })} className="border border-tra-black rounded-lg px-3 py-2 bg-white" rows={3} />
+          <textarea placeholder={`${t('requirementsPlaceholder')} (Kiswahili)`} value={serviceForm.requirementsSw} onChange={(e) => setServiceForm({ ...serviceForm, requirementsSw: e.target.value })} className="border border-tra-black rounded-lg px-3 py-2 bg-white" rows={3} />
+          <textarea placeholder={`${t('procedurePlaceholder')} (Kiswahili)`} value={serviceForm.procedureSw} onChange={(e) => setServiceForm({ ...serviceForm, procedureSw: e.target.value })} className="border border-tra-black rounded-lg px-3 py-2 bg-white" rows={3} />
           <select required value={serviceForm.officeId} onChange={(e) => setServiceForm({ ...serviceForm, officeId: e.target.value })} className="border border-tra-black rounded-lg px-3 py-2 bg-white col-span-2">
             <option value="">{t('officeSelectPlaceholder')}</option>
             {allOffices.map((o) => <option key={o.id} value={o.id}>{o.name} ({o.departmentName})</option>)}

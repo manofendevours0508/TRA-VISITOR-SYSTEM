@@ -21,7 +21,7 @@ export default function Login() {
       await login(username, password);
       navigate('/staff/dashboard');
     } catch (err) {
-      setError(err.response?.data?.error || t('signIn'));
+      setError(err.response?.data?.error || t('loginFailed'));
     } finally {
       setSubmitting(false);
     }
