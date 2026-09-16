@@ -2,20 +2,22 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import KioskLayout from '../components/KioskLayout';
 import { getOffice } from '../api';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export default function OfficeDetail() {
   const { id } = useParams();
   const [office, setOffice] = useState(null);
   const navigate = useNavigate();
+  const { t, pick, lang } = useLanguage();
 
   useEffect(() => {
-    getOffice(id).then(setOffice);
-  }, [id]);
+    getOffice(id, lang).then(setOffice);
+  }, [id, lang]);
 
   if (!office) {
     return (
       <KioskLayout>
-        <p className="text-center text-slate-500">Loading office...</p>
+        <p className="text-center text-slate-500">{t('loadingOffice')}</p>
       </KioskLayout>
     );
   }
@@ -23,22 +25,22 @@ export default function OfficeDetail() {
   return (
     <KioskLayout>
       <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow p-8">
-        <p className="text-sm uppercase tracking-wide text-slate-500">{office.department?.name}</p>
-        <h2 className="text-3xl font-bold text-tra-black mb-4">{office.name}</h2>
+        <p className="text-sm uppercase tracking-wide text-slate-500">{pick(office.department, 'name')}</p>
+        <h2 className="text-3xl font-bold text-tra-black mb-4">{pick(office, 'name')}</h2>
 
         <div className="grid grid-cols-3 gap-4 mb-6">
-          <InfoBox label="Office No" value={office.officeNumber} />
-          <InfoBox label="Floor" value={office.floor} />
-          <InfoBox label="Wing" value={office.wing || '—'} />
+          <InfoBox label={t('officeNo')} value={office.officeNumber} />
+          <InfoBox label={t('floor')} value={pick(office, 'floor')} />
+          <InfoBox label={t('wing')} value={pick(office, 'wing') || '—'} />
         </div>
 
         {office.contactInfo && (
-          <p className="text-slate-600 mb-6">Contact: {office.contactInfo}</p>
+          <p className="text-slate-600 mb-6">{t('contact')}: {office.contactInfo}</p>
         )}
 
         {office.services?.length > 0 && (
           <div className="mb-6">
-            <h3 className="text-lg font-semibold text-slate-700 mb-2">Services offered here</h3>
+            <h3 className="text-lg font-semibold text-slate-700 mb-2">{t('servicesOfferedHere')}</h3>
             <div className="space-y-2">
               {office.services.map((s) => (
                 <Link
@@ -46,7 +48,7 @@ export default function OfficeDetail() {
                   to={`/service/${s.id}`}
                   className="block bg-slate-50 rounded-lg p-4 hover:bg-slate-100"
                 >
-                  {s.name}
+                  {pick(s, 'name')}
                 </Link>
               ))}
             </div>
@@ -58,11 +60,11 @@ export default function OfficeDetail() {
             onClick={() => navigate(`/map?office=${office.id}`)}
             className="flex-1 bg-tra-yellow text-tra-black py-4 rounded-xl text-lg font-semibold hover:bg-tra-yellow-dark"
           >
-            View on Map
+            {t('viewOnMap')}
           </button>
           <img
             src={`/api/qr/office/${office.id}`}
-            alt="Scan QR for this office"
+            alt={t('scanQrForThisOffice')}
             className="w-24 h-24 rounded-lg border"
           />
         </div>

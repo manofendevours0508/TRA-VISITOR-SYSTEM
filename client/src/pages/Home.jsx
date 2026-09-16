@@ -1,17 +1,19 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import KioskLayout from '../components/KioskLayout';
-
-const TILES = [
-  { label: 'Office Directory', to: '/directory' },
-  { label: 'Registry Services', to: '/directory' },
-  { label: 'Building Map', to: '/map' },
-  { label: 'Announcements', to: '/announcements' },
-];
+import { useLanguage } from '../i18n/LanguageContext';
 
 export default function Home() {
   const [query, setQuery] = useState('');
   const navigate = useNavigate();
+  const { t } = useLanguage();
+
+  const TILES = [
+    { label: t('officeDirectory'), to: '/directory' },
+    { label: t('registryServices'), to: '/directory' },
+    { label: t('buildingMap'), to: '/map' },
+    { label: t('announcements'), to: '/announcements' },
+  ];
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -21,8 +23,8 @@ export default function Home() {
   return (
     <KioskLayout>
       <div className="max-w-4xl mx-auto text-center">
-        <h1 className="text-4xl font-bold text-tra-black mb-2">Welcome to TRA</h1>
-        <p className="text-lg text-slate-600 mb-8">Find your office, service or procedure</p>
+        <h1 className="text-4xl font-bold text-tra-black mb-2">{t('welcomeToTra')}</h1>
+        <p className="text-lg text-slate-600 mb-8">{t('findYourOffice')}</p>
 
         <form onSubmit={handleSearch} className="mb-10">
           <div className="flex items-center bg-white rounded-full shadow-lg overflow-hidden border-2 border-tra-black">
@@ -31,14 +33,14 @@ export default function Home() {
               autoFocus
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search office or service (e.g. TIN)"
+              placeholder={t('searchPlaceholder')}
               className="flex-1 px-4 py-5 text-xl outline-none"
             />
             <button
               type="submit"
               className="bg-tra-yellow text-tra-black px-8 py-5 text-xl font-bold hover:bg-tra-yellow-dark"
             >
-              Search
+              {t('search')}
             </button>
           </div>
         </form>

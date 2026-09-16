@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import StaffLayout from '../StaffLayout';
 import staffApi from '../staffApi';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 export default function DocumentRegister({ type }) {
   const [documents, setDocuments] = useState([]);
@@ -12,6 +13,7 @@ export default function DocumentRegister({ type }) {
     deliveryMethod: '', departmentId: '', file: null,
   });
   const [submitting, setSubmitting] = useState(false);
+  const { t } = useLanguage();
 
   const load = () => {
     staffApi.get('/documents', { params: { type } }).then((r) => setDocuments(r.data));
@@ -46,7 +48,7 @@ export default function DocumentRegister({ type }) {
     }
   };
 
-  const title = type === 'incoming' ? 'Incoming Correspondence Register' : 'Outgoing Correspondence Register';
+  const title = type === 'incoming' ? t('incomingCorrespondenceRegister') : t('outgoingCorrespondenceRegister');
 
   return (
     <StaffLayout>
@@ -56,14 +58,14 @@ export default function DocumentRegister({ type }) {
           onClick={() => setShowForm((v) => !v)}
           className="bg-tra-yellow text-tra-black px-4 py-2 rounded-lg font-semibold hover:bg-tra-yellow-dark"
         >
-          {showForm ? 'Cancel' : `+ New ${type === 'incoming' ? 'Incoming' : 'Outgoing'} Document`}
+          {showForm ? t('cancel') : type === 'incoming' ? t('newIncomingDocument') : t('newOutgoingDocument')}
         </button>
       </div>
 
       {showForm && (
         <form onSubmit={handleSubmit} className="bg-tra-yellow rounded-xl shadow p-6 mb-8 grid grid-cols-2 gap-4">
           <div className="col-span-2">
-            <label className="block text-sm font-medium text-tra-black mb-1">Subject</label>
+            <label className="block text-sm font-medium text-tra-black mb-1">{t('subject')}</label>
             <input
               required
               value={form.subject}
@@ -74,7 +76,7 @@ export default function DocumentRegister({ type }) {
 
           <div>
             <label className="block text-sm font-medium text-tra-black mb-1">
-              {type === 'incoming' ? 'Sender' : 'Recipient'}
+              {type === 'incoming' ? t('sender') : t('recipient')}
             </label>
             <input
               value={type === 'incoming' ? form.sender : form.recipient}
@@ -84,20 +86,20 @@ export default function DocumentRegister({ type }) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-tra-black mb-1">Department</label>
+            <label className="block text-sm font-medium text-tra-black mb-1">{t('department')}</label>
             <select
               value={form.departmentId}
               onChange={(e) => setForm({ ...form, departmentId: e.target.value })}
               className="w-full border border-tra-black rounded-lg px-3 py-2 bg-white"
             >
-              <option value="">— Select —</option>
+              <option value="">{t('selectRole')}</option>
               {departments.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
             </select>
           </div>
 
           <div>
             <label className="block text-sm font-medium text-tra-black mb-1">
-              {type === 'incoming' ? 'Date Received' : 'Date Dispatched'}
+              {type === 'incoming' ? t('dateReceived') : t('dateDispatched')}
             </label>
             <input
               type="date"
@@ -109,18 +111,18 @@ export default function DocumentRegister({ type }) {
 
           {type === 'outgoing' && (
             <div>
-              <label className="block text-sm font-medium text-tra-black mb-1">Delivery Method</label>
+              <label className="block text-sm font-medium text-tra-black mb-1">{t('deliveryMethod')}</label>
               <input
                 value={form.deliveryMethod}
                 onChange={(e) => setForm({ ...form, deliveryMethod: e.target.value })}
                 className="w-full border border-tra-black rounded-lg px-3 py-2 bg-white"
-                placeholder="Courier, email, hand delivery..."
+                placeholder={t('deliveryPlaceholder')}
               />
             </div>
           )}
 
           <div className="col-span-2">
-            <label className="block text-sm font-medium text-tra-black mb-1">Attach Scanned Document</label>
+            <label className="block text-sm font-medium text-tra-black mb-1">{t('attachScannedDocument')}</label>
             <input
               type="file"
               onChange={(e) => setForm({ ...form, file: e.target.files[0] })}
@@ -134,7 +136,7 @@ export default function DocumentRegister({ type }) {
               disabled={submitting}
               className="bg-tra-black text-tra-yellow px-6 py-2.5 rounded-lg font-semibold hover:bg-slate-800 disabled:opacity-50"
             >
-              {submitting ? 'Registering...' : 'Register Document'}
+              {submitting ? t('registering') : t('registerDocument')}
             </button>
           </div>
         </form>
@@ -144,12 +146,12 @@ export default function DocumentRegister({ type }) {
         <table className="w-full text-sm">
           <thead className="bg-slate-50 text-left text-slate-500">
             <tr>
-              <th className="px-4 py-2">Reference No</th>
-              <th className="px-4 py-2">Subject</th>
-              <th className="px-4 py-2">{type === 'incoming' ? 'Sender' : 'Recipient'}</th>
-              <th className="px-4 py-2">Department</th>
-              <th className="px-4 py-2">Status</th>
-              <th className="px-4 py-2">Date</th>
+              <th className="px-4 py-2">{t('referenceNo')}</th>
+              <th className="px-4 py-2">{t('subject')}</th>
+              <th className="px-4 py-2">{type === 'incoming' ? t('sender') : t('recipient')}</th>
+              <th className="px-4 py-2">{t('department')}</th>
+              <th className="px-4 py-2">{t('status')}</th>
+              <th className="px-4 py-2">{t('date')}</th>
             </tr>
           </thead>
           <tbody>
@@ -170,7 +172,7 @@ export default function DocumentRegister({ type }) {
               </tr>
             ))}
             {documents.length === 0 && (
-              <tr><td colSpan={6} className="px-4 py-6 text-center text-slate-400">No documents registered yet.</td></tr>
+              <tr><td colSpan={6} className="px-4 py-6 text-center text-slate-400">{t('noDocumentsRegistered')}</td></tr>
             )}
           </tbody>
         </table>

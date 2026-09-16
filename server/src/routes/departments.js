@@ -1,6 +1,7 @@
 const express = require('express');
 const prisma = require('../prismaClient');
 const { requireAuth, requireRole } = require('../middleware/auth');
+const { localize } = require('../utils/localize');
 
 const router = express.Router();
 
@@ -10,7 +11,7 @@ router.get('/', async (req, res) => {
   const departments = await prisma.department.findMany({
     include: { offices: { include: { services: true } } },
   });
-  res.json(departments);
+  res.json(localize(departments, req.query.lang));
 });
 
 router.post('/', requireAuth, requireRole(...manageRoles), async (req, res) => {

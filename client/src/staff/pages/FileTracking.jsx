@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import StaffLayout from '../StaffLayout';
 import staffApi from '../staffApi';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 export default function FileTracking() {
   const [documents, setDocuments] = useState([]);
+  const { t } = useLanguage();
 
   useEffect(() => {
     staffApi.get('/documents', { params: { status: 'in-transit' } }).then((r) => setDocuments(r.data));
@@ -12,15 +14,15 @@ export default function FileTracking() {
 
   return (
     <StaffLayout>
-      <h1 className="text-2xl font-bold text-tra-black mb-6">File Tracking — Currently In Transit</h1>
+      <h1 className="text-2xl font-bold text-tra-black mb-6">{t('fileTrackingTitle')}</h1>
       <div className="bg-white rounded-xl shadow overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-slate-50 text-left text-slate-500">
             <tr>
-              <th className="px-4 py-2">Reference No</th>
-              <th className="px-4 py-2">Subject</th>
-              <th className="px-4 py-2">Currently With</th>
-              <th className="px-4 py-2">Department</th>
+              <th className="px-4 py-2">{t('referenceNo')}</th>
+              <th className="px-4 py-2">{t('subject')}</th>
+              <th className="px-4 py-2">{t('currentlyWith')}</th>
+              <th className="px-4 py-2">{t('department')}</th>
             </tr>
           </thead>
           <tbody>
@@ -37,7 +39,7 @@ export default function FileTracking() {
               </tr>
             ))}
             {documents.length === 0 && (
-              <tr><td colSpan={4} className="px-4 py-6 text-center text-slate-400">No files currently in transit.</td></tr>
+              <tr><td colSpan={4} className="px-4 py-6 text-center text-slate-400">{t('noFilesInTransit')}</td></tr>
             )}
           </tbody>
         </table>

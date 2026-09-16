@@ -15,12 +15,14 @@ model Role {
 }
 
 model Department {
-  id          Int        @id @default(autoincrement())
-  name        String     @unique
-  description String?
-  offices     Office[]
-  users       User[]
-  documents   Document[]
+  id            Int        @id @default(autoincrement())
+  name          String     @unique
+  nameSw        String? // Swahili name
+  description   String?
+  descriptionSw String? // Swahili description
+  offices       Office[]
+  users         User[]
+  documents     Document[]
 }
 
 model User {
@@ -43,10 +45,14 @@ model User {
 model Office {
   id           Int         @id @default(autoincrement())
   name         String
+  nameSw       String? // Swahili name
   officeNumber String
   floor        String
+  floorSw      String? // Swahili floor
   wing         String?
+  wingSw       String? // Swahili wing
   location     String?
+  locationSw   String? // Swahili location
   contactInfo  String?
   departmentId Int
   department   Department  @relation(fields: [departmentId], references: [id])
@@ -54,13 +60,17 @@ model Office {
 }
 
 model Service {
-  id           Int      @id @default(autoincrement())
-  name         String
-  description  String?
-  procedure    String? // step-by-step text, newline separated
-  requirements String? // required documents, newline separated
-  officeId     Int
-  office       Office   @relation(fields: [officeId], references: [id])
+  id             Int      @id @default(autoincrement())
+  name           String
+  nameSw         String? // Swahili name
+  description    String?
+  descriptionSw  String? // Swahili description
+  procedure      String? // step-by-step text, newline separated
+  procedureSw    String? // Swahili procedure steps
+  requirements   String? // required documents, newline separated
+  requirementsSw String? // Swahili requirements
+  officeId       Int
+  office         Office   @relation(fields: [officeId], references: [id])
 }
 
 model Document {
@@ -101,7 +111,9 @@ model FileMovement {
 model Announcement {
   id        Int      @id @default(autoincrement())
   title     String
+  titleSw   String? // Swahili title
   message   String
+  messageSw String? // Swahili message
   startDate DateTime
   endDate   DateTime
   status    String   @default("active")

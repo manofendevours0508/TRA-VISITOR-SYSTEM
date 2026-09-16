@@ -1,6 +1,7 @@
 const express = require('express');
 const prisma = require('../prismaClient');
 const { requireAuth, requireRole } = require('../middleware/auth');
+const { localize } = require('../utils/localize');
 
 const router = express.Router();
 
@@ -16,7 +17,7 @@ router.get('/', async (req, res) => {
     },
     orderBy: { startDate: 'desc' },
   });
-  res.json(announcements);
+  res.json(localize(announcements, req.query.lang));
 });
 
 // All announcements, including inactive/expired, for the admin manager view

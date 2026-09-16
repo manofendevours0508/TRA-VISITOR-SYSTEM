@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import StaffLayout from '../StaffLayout';
 import staffApi from '../staffApi';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 export default function AnnouncementsManager() {
   const [announcements, setAnnouncements] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ title: '', message: '', startDate: '', endDate: '' });
+  const { t } = useLanguage();
 
   const load = () => staffApi.get('/announcements/all').then((r) => setAnnouncements(r.data));
 
@@ -25,7 +27,7 @@ export default function AnnouncementsManager() {
   };
 
   const remove = async (a) => {
-    if (!window.confirm(`Delete announcement "${a.title}"?`)) return;
+    if (!window.confirm(`${t('deleteLabel')} "${a.title}"?`)) return;
     await staffApi.delete(`/announcements/${a.id}`);
     load();
   };
@@ -33,33 +35,33 @@ export default function AnnouncementsManager() {
   return (
     <StaffLayout>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-tra-black">Announcements</h1>
+        <h1 className="text-2xl font-bold text-tra-black">{t('announcements')}</h1>
         <button onClick={() => setShowForm((v) => !v)} className="bg-tra-yellow text-tra-black px-4 py-2 rounded-lg font-semibold hover:bg-tra-yellow-dark">
-          {showForm ? 'Cancel' : '+ New Announcement'}
+          {showForm ? t('cancel') : t('newAnnouncement')}
         </button>
       </div>
 
       {showForm && (
         <form onSubmit={handleCreate} className="bg-tra-yellow rounded-xl shadow p-6 mb-8 grid grid-cols-2 gap-4">
           <div className="col-span-2">
-            <label className="block text-sm font-medium text-tra-black mb-1">Title</label>
+            <label className="block text-sm font-medium text-tra-black mb-1">{t('title')}</label>
             <input required value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="w-full border border-tra-black rounded-lg px-3 py-2 bg-white" />
           </div>
           <div className="col-span-2">
-            <label className="block text-sm font-medium text-tra-black mb-1">Message</label>
+            <label className="block text-sm font-medium text-tra-black mb-1">{t('message')}</label>
             <textarea required value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="w-full border border-tra-black rounded-lg px-3 py-2 bg-white" rows={3} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-tra-black mb-1">Start Date</label>
+            <label className="block text-sm font-medium text-tra-black mb-1">{t('startDate')}</label>
             <input required type="date" value={form.startDate} onChange={(e) => setForm({ ...form, startDate: e.target.value })} className="w-full border border-tra-black rounded-lg px-3 py-2 bg-white" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-tra-black mb-1">End Date</label>
+            <label className="block text-sm font-medium text-tra-black mb-1">{t('endDate')}</label>
             <input required type="date" value={form.endDate} onChange={(e) => setForm({ ...form, endDate: e.target.value })} className="w-full border border-tra-black rounded-lg px-3 py-2 bg-white" />
           </div>
           <div className="col-span-2">
             <button type="submit" className="bg-tra-black text-tra-yellow px-6 py-2.5 rounded-lg font-semibold hover:bg-slate-800">
-              Publish
+              {t('publish')}
             </button>
           </div>
         </form>
@@ -77,13 +79,13 @@ export default function AnnouncementsManager() {
             </div>
             <div className="space-x-3 shrink-0 ml-4">
               <button onClick={() => toggleStatus(a)} className="text-tra-black hover:underline text-xs">
-                {a.status === 'active' ? 'Deactivate' : 'Activate'}
+                {a.status === 'active' ? t('deactivate') : t('activate')}
               </button>
-              <button onClick={() => remove(a)} className="text-red-600 hover:underline text-xs">Delete</button>
+              <button onClick={() => remove(a)} className="text-red-600 hover:underline text-xs">{t('deleteLabel')}</button>
             </div>
           </div>
         ))}
-        {announcements.length === 0 && <p className="text-slate-400">No announcements yet.</p>}
+        {announcements.length === 0 && <p className="text-slate-400">{t('noAnnouncementsYet')}</p>}
       </div>
     </StaffLayout>
   );
