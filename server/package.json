@@ -9,6 +9,7 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:generate": "prisma generate",
     "prisma:seed": "node prisma/seed.js",
+    "prisma:sync-translations": "node prisma/syncTranslations.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

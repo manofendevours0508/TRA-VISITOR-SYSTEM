@@ -1,21 +1,24 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
-
-const NAV_ITEMS = [
-  { to: '/staff/dashboard', label: 'Dashboard' },
-  { to: '/staff/incoming', label: 'Incoming Register' },
-  { to: '/staff/outgoing', label: 'Outgoing Register' },
-  { to: '/staff/tracking', label: 'File Tracking' },
-  { to: '/staff/search', label: 'Document Search' },
-  { to: '/staff/directory', label: 'Office & Service Directory' },
-  { to: '/staff/announcements', label: 'Announcements' },
-  { to: '/staff/users', label: 'Users', adminOnly: true },
-  { to: '/staff/audit-log', label: 'Audit Log', roles: ['System Administrator', 'Supervisor', 'Management'] },
-];
+import { useLanguage } from '../i18n/LanguageContext';
+import LanguageToggle from '../components/LanguageToggle';
 
 export default function StaffLayout({ children }) {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const { t } = useLanguage();
+
+  const NAV_ITEMS = [
+    { to: '/staff/dashboard', label: t('dashboard') },
+    { to: '/staff/incoming', label: t('incomingRegister') },
+    { to: '/staff/outgoing', label: t('outgoingRegister') },
+    { to: '/staff/tracking', label: t('fileTracking') },
+    { to: '/staff/search', label: t('documentSearch') },
+    { to: '/staff/directory', label: t('officeServiceDirectory') },
+    { to: '/staff/announcements', label: t('announcements') },
+    { to: '/staff/users', label: t('users'), adminOnly: true },
+    { to: '/staff/audit-log', label: t('auditLog'), roles: ['System Administrator', 'Supervisor', 'Management'] },
+  ];
 
   const visibleItems = NAV_ITEMS.filter((item) => {
     if (item.adminOnly) return user?.role === 'System Administrator';
@@ -28,7 +31,7 @@ export default function StaffLayout({ children }) {
       <aside className="w-64 bg-tra-black text-white flex flex-col shrink-0">
         <div className="px-5 py-5 border-b border-tra-yellow">
           <div className="font-bold text-lg leading-tight"><span className="text-tra-yellow">TRA</span>-DIRECT</div>
-          <div className="text-xs text-slate-400">Staff Registry Portal</div>
+          <div className="text-xs text-slate-400">{t('staffRegistryPortal')}</div>
         </div>
         <nav className="flex-1 py-4 space-y-1">
           {visibleItems.map((item) => (
@@ -43,14 +46,19 @@ export default function StaffLayout({ children }) {
             </NavLink>
           ))}
         </nav>
-        <div className="px-5 py-4 border-t border-slate-800 text-sm">
-          <div className="font-medium">{user?.fullName}</div>
-          <div className="text-slate-400 text-xs mb-2">{user?.role}</div>
+        <div className="px-5 py-4 border-t border-slate-800 text-sm space-y-2">
+          <div className="flex justify-between items-center">
+            <div>
+              <div className="font-medium">{user?.fullName}</div>
+              <div className="text-slate-400 text-xs">{user?.role}</div>
+            </div>
+            <LanguageToggle />
+          </div>
           <button
             onClick={() => { logout(); navigate('/staff/login'); }}
             className="text-slate-400 hover:text-white text-xs underline"
           >
-            Log out
+            {t('logOut')}
           </button>
         </div>
       </aside>

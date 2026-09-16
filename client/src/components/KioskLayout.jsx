@@ -1,7 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom';
+import LanguageToggle from './LanguageToggle';
+import { useLanguage } from '../i18n/LanguageContext';
 
 export default function KioskLayout({ children }) {
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   return (
     <div className="min-h-screen bg-slate-100 flex flex-col">
@@ -12,15 +15,16 @@ export default function KioskLayout({ children }) {
         >
           TANZANIA <span className="text-tra-yellow">REVENUE AUTHORITY</span>
         </button>
-        <nav className="flex gap-6 text-lg">
-          <Link to="/" className="hover:text-tra-yellow">Home</Link>
-          <Link to="/map" className="hover:text-tra-yellow">Building Map</Link>
-          <Link to="/announcements" className="hover:text-tra-yellow">Announcements</Link>
+        <nav className="flex items-center gap-6 text-lg">
+          <Link to="/" className="hover:text-tra-yellow">{t('home')}</Link>
+          <Link to="/map" className="hover:text-tra-yellow">{t('buildingMap')}</Link>
+          <Link to="/announcements" className="hover:text-tra-yellow">{t('announcements')}</Link>
+          <LanguageToggle />
         </nav>
       </header>
       <main className="flex-1 px-8 py-8">{children}</main>
       <footer className="bg-tra-black text-white text-center py-3 text-sm">
-        TRA-DIRECT — Digital Registry, Office Directory and Visitor Guidance System
+        {t('footerText')}
       </footer>
     </div>
   );

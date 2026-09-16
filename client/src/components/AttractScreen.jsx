@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react';
 import { getServices } from '../api';
+import { useLanguage } from '../i18n/LanguageContext';
 
 const SLIDE_DURATION_MS = 7000;
 
 export default function AttractScreen() {
   const [services, setServices] = useState([]);
   const [index, setIndex] = useState(0);
+  const { t, pick, lang } = useLanguage();
 
   useEffect(() => {
-    getServices().then(setServices);
-  }, []);
+    getServices(lang).then(setServices);
+  }, [lang]);
 
   useEffect(() => {
     if (services.length < 2) return;
@@ -30,7 +32,7 @@ export default function AttractScreen() {
   }
 
   const service = services[index];
-  const steps = (service.procedure || '')
+  const steps = (pick(service, 'procedure') || '')
     .split('\n')
     .map((s) => s.trim())
     .filter(Boolean)
@@ -42,19 +44,19 @@ export default function AttractScreen() {
         <h1 className="text-3xl font-bold tracking-wide">
           TANZANIA <span className="text-tra-yellow">REVENUE AUTHORITY</span>
         </h1>
-        <p className="text-slate-400 mt-2 text-lg">Tap anywhere to search for an office or service</p>
+        <p className="text-slate-400 mt-2 text-lg">{t('tapAnywhere')}</p>
       </div>
 
       <div className="flex-1 flex items-center justify-center px-16">
         <div className="max-w-4xl w-full grid grid-cols-3 gap-10 items-center">
           <div className="col-span-2">
             <div className="text-tra-yellow text-lg font-semibold uppercase tracking-wide mb-2">
-              Quick Answer
+              {t('quickAnswer')}
             </div>
-            <h2 className="text-5xl font-bold mb-4">{service.name}</h2>
+            <h2 className="text-5xl font-bold mb-4">{pick(service, 'name')}</h2>
             <p className="text-xl text-slate-300 mb-6">
-              {service.office?.name} · Office {service.office?.officeNumber} · {service.office?.floor}
-              {service.office?.wing ? ` · ${service.office.wing}` : ''}
+              {pick(service.office, 'name')} · {t('officeNo')} {service.office?.officeNumber} · {pick(service.office, 'floor')}
+              {service.office?.wing ? ` · ${pick(service.office, 'wing')}` : ''}
             </p>
 
             {steps.length > 0 && (
@@ -74,10 +76,10 @@ export default function AttractScreen() {
           <div className="flex flex-col items-center justify-self-center bg-white rounded-2xl p-6">
             <img
               src={`/api/qr/service/${service.id}`}
-              alt={`Scan QR for ${service.name}`}
+              alt={`${t('scanForDetails')} ${pick(service, 'name')}`}
               className="w-40 h-40"
             />
-            <p className="text-tra-black text-sm font-semibold mt-3">Scan for details</p>
+            <p className="text-tra-black text-sm font-semibold mt-3">{t('scanForDetails')}</p>
           </div>
         </div>
       </div>

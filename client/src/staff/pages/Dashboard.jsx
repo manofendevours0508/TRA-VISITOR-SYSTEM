@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import StaffLayout from '../StaffLayout';
 import staffApi from '../staffApi';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 export default function Dashboard() {
   const [summary, setSummary] = useState(null);
+  const { t } = useLanguage();
 
   useEffect(() => {
     staffApi.get('/reports/summary').then((r) => setSummary(r.data));
@@ -13,25 +15,25 @@ export default function Dashboard() {
   if (!summary) {
     return (
       <StaffLayout>
-        <p className="text-slate-500">Loading dashboard...</p>
+        <p className="text-slate-500">{t('loadingDashboard')}</p>
       </StaffLayout>
     );
   }
 
   const tiles = [
-    { label: 'Total Documents', value: summary.totalDocuments },
-    { label: 'Pending', value: summary.pending },
-    { label: 'In Progress', value: summary.inProgress },
-    { label: 'Completed', value: summary.completed },
-    { label: 'Offices', value: summary.totalOffices },
-    { label: 'Services', value: summary.totalServices },
-    { label: 'Active Users', value: summary.totalUsers },
-    { label: 'Incoming / Outgoing', value: `${summary.incoming} / ${summary.outgoing}` },
+    { label: t('totalDocuments'), value: summary.totalDocuments },
+    { label: t('pending'), value: summary.pending },
+    { label: t('inProgress'), value: summary.inProgress },
+    { label: t('completed'), value: summary.completed },
+    { label: t('officesLabel'), value: summary.totalOffices },
+    { label: t('servicesLabel'), value: summary.totalServices },
+    { label: t('activeUsers'), value: summary.totalUsers },
+    { label: t('incomingOutgoing'), value: `${summary.incoming} / ${summary.outgoing}` },
   ];
 
   return (
     <StaffLayout>
-      <h1 className="text-2xl font-bold text-tra-black mb-6">Administrator Dashboard</h1>
+      <h1 className="text-2xl font-bold text-tra-black mb-6">{t('administratorDashboard')}</h1>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {tiles.map((tile) => (
@@ -42,16 +44,16 @@ export default function Dashboard() {
         ))}
       </div>
 
-      <h2 className="text-lg font-semibold text-slate-700 mb-3">Recent Documents</h2>
+      <h2 className="text-lg font-semibold text-slate-700 mb-3">{t('recentDocuments')}</h2>
       <div className="bg-white rounded-xl shadow overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-slate-50 text-left text-slate-500">
             <tr>
-              <th className="px-4 py-2">Reference No</th>
-              <th className="px-4 py-2">Subject</th>
-              <th className="px-4 py-2">Type</th>
-              <th className="px-4 py-2">Status</th>
-              <th className="px-4 py-2">Department</th>
+              <th className="px-4 py-2">{t('referenceNo')}</th>
+              <th className="px-4 py-2">{t('subject')}</th>
+              <th className="px-4 py-2">{t('type')}</th>
+              <th className="px-4 py-2">{t('status')}</th>
+              <th className="px-4 py-2">{t('department')}</th>
             </tr>
           </thead>
           <tbody>
@@ -69,7 +71,7 @@ export default function Dashboard() {
               </tr>
             ))}
             {summary.recentDocuments.length === 0 && (
-              <tr><td colSpan={5} className="px-4 py-6 text-center text-slate-400">No documents registered yet.</td></tr>
+              <tr><td colSpan={5} className="px-4 py-6 text-center text-slate-400">{t('noDocumentsRegistered')}</td></tr>
             )}
           </tbody>
         </table>
