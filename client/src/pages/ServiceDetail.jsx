@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import KioskLayout from '../components/KioskLayout';
 import { getService } from '../api';
-import { API_BASE_URL } from '../apiBase';
 import { useLanguage } from '../i18n/LanguageContext';
 
 export default function ServiceDetail() {
@@ -71,7 +70,7 @@ export default function ServiceDetail() {
             {t('viewOnMap')}
           </button>
           <img
-            src={`${API_BASE_URL}/qr/service/${service.id}`}
+            src={`/api/qr/service/${service.id}`}
             alt={t('scanQrForThisService')}
             className="w-24 h-24 rounded-lg border"
           />

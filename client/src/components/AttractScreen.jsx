@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { getServices } from '../api';
-import { API_BASE_URL } from '../apiBase';
 import { useLanguage } from '../i18n/LanguageContext';
 import LocationSlideshow from './LocationSlideshow';
 import SlideProgressBar from './SlideProgressBar';
@@ -99,7 +98,7 @@ export default function AttractScreen() {
 
                 <div className="flex flex-col items-center justify-self-center bg-white border-2 border-tra-black rounded-2xl p-4">
                   <img
-                    src={`${API_BASE_URL}/qr/service/${service.id}`}
+                    src={`/api/qr/service/${service.id}`}
                     alt={`${t('scanForDetails')} ${pick(service, 'name')}`}
                     className="w-24 md:w-28 h-24 md:h-28"
                   />
