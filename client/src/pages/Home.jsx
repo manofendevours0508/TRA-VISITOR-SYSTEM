@@ -10,7 +10,7 @@ export default function Home() {
 
   const TILES = [
     { label: t('officeDirectory'), to: '/directory' },
-    { label: t('registryServices'), to: '/directory' },
+    { label: t('buildingFloors'), to: '/floors' },
     { label: t('buildingMap'), to: '/map' },
     { label: t('announcements'), to: '/announcements' },
   ];

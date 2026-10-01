@@ -12,8 +12,14 @@ export const translations = {
     search: 'Search',
     officeDirectory: 'Office Directory',
     registryServices: 'Registry Services',
+    buildingFloors: 'Building Floors',
     // Directory
     officeDirectoryTitle: 'Office Directory',
+    // Floors / FloorRooms
+    buildingFloorsTitle: 'Building Floors',
+    selectFloorHint: 'Select a floor to see its rooms and services',
+    roomsLabel: 'rooms',
+    backToFloors: 'Back to floors',
     // OfficeDetail
     loadingOffice: 'Loading office...',
     officeNo: 'Office No',
@@ -205,7 +211,12 @@ export const translations = {
     search: 'Tafuta',
     officeDirectory: 'Orodha ya Ofisi',
     registryServices: 'Huduma za Rejesta',
+    buildingFloors: 'Ghorofa za Jengo',
     officeDirectoryTitle: 'Orodha ya Ofisi',
+    buildingFloorsTitle: 'Ghorofa za Jengo',
+    selectFloorHint: 'Chagua ghorofa kuona vyumba na huduma zake',
+    roomsLabel: 'vyumba',
+    backToFloors: 'Rudi kwenye ghorofa',
     loadingOffice: 'Inapakia ofisi...',
     officeNo: 'Nambari ya Ofisi',
     floor: 'Ghorofa',

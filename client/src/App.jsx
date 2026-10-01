@@ -3,6 +3,8 @@ import KioskIdleGate from './components/KioskIdleGate';
 import Home from './pages/Home';
 import SearchResults from './pages/SearchResults';
 import Directory from './pages/Directory';
+import Floors from './pages/Floors';
+import FloorRooms from './pages/FloorRooms';
 import OfficeDetail from './pages/OfficeDetail';
 import ServiceDetail from './pages/ServiceDetail';
 import BuildingMap from './pages/BuildingMap';
@@ -28,6 +30,8 @@ export default function App() {
       <Route path="/" element={<KioskIdleGate><Home /></KioskIdleGate>} />
       <Route path="/search" element={<KioskIdleGate><SearchResults /></KioskIdleGate>} />
       <Route path="/directory" element={<KioskIdleGate><Directory /></KioskIdleGate>} />
+      <Route path="/floors" element={<KioskIdleGate><Floors /></KioskIdleGate>} />
+      <Route path="/floors/:floor" element={<KioskIdleGate><FloorRooms /></KioskIdleGate>} />
       <Route path="/office/:id" element={<KioskIdleGate><OfficeDetail /></KioskIdleGate>} />
       <Route path="/service/:id" element={<KioskIdleGate><ServiceDetail /></KioskIdleGate>} />
       <Route path="/map" element={<KioskIdleGate><BuildingMap /></KioskIdleGate>} />

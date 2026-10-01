@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-const ACTIVITY_EVENTS = ['pointerdown', 'mousemove', 'keydown', 'touchstart', 'wheel'];
+const ACTIVITY_EVENTS = ['pointerdown', 'mousedown', 'click', 'mousemove', 'keydown', 'touchstart', 'wheel'];
 
 // Tracks whether the user has been inactive for `timeoutMs`. Starts idle
 // (so the attract screen shows immediately on load) and resets on any

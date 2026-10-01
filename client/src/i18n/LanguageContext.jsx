@@ -1,15 +1,19 @@
-import { createContext, useContext, useState, useCallback } from 'react';
+import { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import { translations } from './translations';
 
 const LanguageContext = createContext(null);
+const DEFAULT_LANG = 'sw';
 
 export function LanguageProvider({ children }) {
-  const [lang, setLang] = useState(() => localStorage.getItem('tra_lang') || 'en');
+  const [lang, setLang] = useState(() => localStorage.getItem('tra_lang') || DEFAULT_LANG);
+
+  useEffect(() => {
+    document.documentElement.lang = lang === 'sw' ? 'sw' : 'en';
+  }, [lang]);
 
   const setLanguage = useCallback((newLang) => {
     localStorage.setItem('tra_lang', newLang);
     setLang(newLang);
-    document.documentElement.lang = newLang === 'sw' ? 'sw' : 'en';
   }, []);
 
   const t = useCallback((key) => {
