@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import KioskLayout from '../components/KioskLayout';
 import { getOffice } from '../api';
+import { API_BASE_URL } from '../apiBase';
 import { useLanguage } from '../i18n/LanguageContext';
 
 export default function OfficeDetail() {
@@ -63,7 +64,7 @@ export default function OfficeDetail() {
             {t('viewOnMap')}
           </button>
           <img
-            src={`/api/qr/office/${office.id}`}
+            src={`${API_BASE_URL}/qr/office/${office.id}`}
             alt={t('scanQrForThisOffice')}
             className="w-24 h-24 rounded-lg border"
           />

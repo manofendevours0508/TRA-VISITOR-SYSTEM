@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { API_BASE_URL } from '../apiBase';
 
-const staffApi = axios.create({ baseURL: '/api' });
+const staffApi = axios.create({ baseURL: API_BASE_URL });
 
 export function setAuthToken(token) {
   if (token) {

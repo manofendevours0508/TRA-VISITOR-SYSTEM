@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { API_BASE_URL } from './apiBase';
 
-const api = axios.create({ baseURL: '/api' });
+const api = axios.create({ baseURL: API_BASE_URL });
 
 const langParams = (lang) => lang === 'sw' ? { params: { lang: 'sw' } } : undefined;
 
